@@ -1,8 +1,7 @@
-import express from 'express';
-import { createServer} from 'http';
+import express from "express";
+import { createServer } from "http";
 
-import controller from './controller';
-
+import controller from "./controller";
 
 const app = express();
 
