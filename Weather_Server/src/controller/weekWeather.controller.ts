@@ -1,22 +1,35 @@
 import express, { json, response } from "express";
 
 const Time = new Date();
+
 var reqTime =
   Time.getFullYear().toString() +
   Time.getMonth().toString() +
   Time.getDate().toString();
-
+var datas;
 const router = express.Router();
+const fs = require('fs');
+
+fs.readFile('C:\\Users\\Nextop\\Documents\\기민수\\키 파일들\\today.txt', 'utf8' , (err, data) => {
+  if (err) {
+     console.error(err);
+     return
+ }
+   datas = data;
+});
+
+var datas;
 
 router.get("/", (req, res) => {
   var request = require("request");
+
 
   var url = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
   var queryParams =
     url +
     "?" +
-    encodeURIComponent("serviceKey") +
-    "=CO5AAa%2Bz%2FvhOJ88caWzYfMEzejHmUUAt7AjDXNfaMzaDLDUMTppC82szj9hBh86dhjsOIcWyQO6ag4SWOv6XbA%3D%3D"; /* Service Key*/
+    encodeURIComponent("serviceKey") + "=" +
+    datas; /* Service Key*/
   queryParams +=
     "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent("1"); /* */
   queryParams +=
@@ -41,7 +54,7 @@ router.get("/", (req, res) => {
   //console.log('Headers', JSON.stringify(response.headers));
   //console.log('Reponse received', body);
   request(queryParams, (err: any, response: any, body: any) => {
-    const data = JSON.parse(body);
+    const data = body;
 
     return res.status(202).send(data);
   });
@@ -55,7 +68,7 @@ router.get("/tempeture", (req, res) => {
     url +
     "?" +
     encodeURIComponent("serviceKey") +
-    "=CO5AAa%2Bz%2FvhOJ88caWzYfMEzejHmUUAt7AjDXNfaMzaDLDUMTppC82szj9hBh86dhjsOIcWyQO6ag4SWOv6XbA%3D%3D"; /* Service Key*/
+    "=" + datas; /* Service Key*/
   queryParams +=
     "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent("1"); /* */
   queryParams +=
@@ -77,7 +90,7 @@ router.get("/tempeture", (req, res) => {
     encodeURIComponent(reqTime.toString() + "0600"); /* */
 
   request(queryParams, (err: any, response: any, body: any) => {
-    const data = JSON.parse(body);
+    const data = body;
 
     return res.status(202).send(data);
   });
